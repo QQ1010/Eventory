@@ -79,10 +79,9 @@ The first version focuses on backend architecture and system design rather than 
 ## Development Plan
 ### Day 1
 - Define project requirements
-- Design folder structure
 - Design API contracts
 - Design MongoDB schema
-- Design Elasticsearch mapping
+- Controller → Service → MongoDB
 ### Day 2
 - Implement event ingestion API
 - Add request validation
