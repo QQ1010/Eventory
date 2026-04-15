@@ -1,3 +1,4 @@
+import {Event, EventType} from "../models/event.model.js";
 import { CreateEventInput } from "../models/event.model.js";
 
 export interface IEventService {
