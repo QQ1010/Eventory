@@ -16,7 +16,8 @@ import { MongodbEventRepository } from "./repositories/mongo-event.repository.js
 import { EventService } from "./services/event.service.js";
 import { EventController } from "./controllers/event.controller.js";
 import { createEventRoutes } from "./routes/event.routes.js";
-
+import { BullMQEventQueue } from "./queues/bullmq-event.queue.js";
+import { IngestEventService } from "./services/ingest-event.service.js";
 export async function buildApp() {
   const app = express();
 
@@ -32,7 +33,9 @@ export async function buildApp() {
 
   const eventRepository = new MongodbEventRepository(db);
   const eventService = new EventService(eventRepository);
-  const eventController = new EventController(eventService);
+  const eventQueue = new BullMQEventQueue();
+  const ingestEventService = new IngestEventService(eventQueue);
+  const eventController = new EventController(eventService, ingestEventService);
 
   app.use(createEventRoutes(eventController));
 
