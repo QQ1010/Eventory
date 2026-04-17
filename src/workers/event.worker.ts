@@ -23,8 +23,8 @@ async function startWorker(): Promise<void> {
     const worker = new Worker<CreateEventInput>(
         EVENT_INGESTION_QUEUE_NAME,
         async (job) => {
-            console.log(`Processing job ${job.id}`);
-
+            console.log(`Processing job ${job.id}, attempt ${job.attemptsMade + 1}`);
+            
             const event = await eventService.createEvent(job.data);
 
             console.log(`Event created: ${event.id}`);

@@ -93,6 +93,12 @@ Client
 ```
 ### ### Phase 2: Event-Driven Architecture
 - Add request validation and error handling
+- Implemented Express MVC structure
+- Implemented MongoDB event persistence
+- Implemented POST /events synchronous ingestion
+- Refactored POST /events into Redis Queue based asynchronous ingestion
+- Implemented BullMQ worker to consume events and store them in MongoDB
+- Verify retry and backoff behavior
 
 The next phase will refactor event ingestion into an asynchronous flow.
 
@@ -105,9 +111,6 @@ Client / CLI
   → Elasticsearch
 ```
 
-### Day 
-- Implement event ingestion API
-- Add Redis queue
 ### Day 
 - Implement worker
 - Store events in MongoDB
