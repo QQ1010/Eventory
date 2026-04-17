@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "worker:dev": "tsx watch src/workers/event.worker.ts"
   },
   "repository": {
     "type": "git",
