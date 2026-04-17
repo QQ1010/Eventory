@@ -49,7 +49,7 @@ Example event:
 # Tech Stack
 - Node.js
 - TypeScript
-- Fastify
+- Express
 - MongoDB
 - Elasticsearch
 - Redis
@@ -72,30 +72,52 @@ This project is designed to practice the following backend concepts:
 - CI/CD basics
 
 ## Project Scope
-This project is intentionally scoped to be achievable in around 5 days.
-
 The first version focuses on backend architecture and system design rather than frontend UI. The main user interfaces will be REST APIs and a CLI tool.
 
 ## Development Plan
-### Day 1
+### Phase 1: Synchronous MVC (Day 1 ~ Day 3)
 - Define project requirements
 - Design API contracts
 - Design MongoDB schema
-- Controller → Service → MongoDB
-### Day 2
+- Controller → Service → MongoDB (Phase 1)
+
+The first implementation uses a simple synchronous MVC flow.
+
+```text
+Client
+  → Express Route
+  → Controller
+  → Service
+  → Repository
+  → MongoDB
+```
+### ### Phase 2: Event-Driven Architecture
+- Add request validation and error handling
+
+The next phase will refactor event ingestion into an asynchronous flow.
+
+```text
+Client / CLI
+  → API Server
+  → Redis Queue
+  → Worker
+  → MongoDB
+  → Elasticsearch
+```
+
+### Day 
 - Implement event ingestion API
-- Add request validation
 - Add Redis queue
-### Day 3
+### Day 
 - Implement worker
 - Store events in MongoDB
 - Index events into Elasticsearch
 - Add retry handling
-### Day 4
+### Day 
 - Implement search API
 - Implement analytics API
 - Add Redis cache-aside pattern
-### Day 5
+### Day 
 - Implement CLI tool
 - Add Docker Compose
 - Add tests
