@@ -8,9 +8,10 @@ event.service.ts
 
 import { Event, EventType, CreateEventInput } from "../models/event.model.js";
 import { IEventRepository } from "../repositories/event.repository.interface.js";
+import { IEventService } from "./event.service.interface.js";
 
 
-export class EventService {
+export class EventService implements IEventService {
   private readonly eventRepository: IEventRepository;
 
   constructor(eventRepository: IEventRepository) {
