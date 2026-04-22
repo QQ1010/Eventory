@@ -99,6 +99,7 @@ Client
 - Refactored POST /events into Redis Queue based asynchronous ingestion
 - Implemented BullMQ worker to consume events and store them in MongoDB
 - Verify retry and backoff behavior
+- Implemented GET / search by using Elasticsearch
 
 The next phase will refactor event ingestion into an asynchronous flow.
 
