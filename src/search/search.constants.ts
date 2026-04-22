@@ -1,0 +1,1 @@
+export const EVENTS_INDEX_NAME = "events_v1";

@@ -16,6 +16,8 @@ POST /events
 
 getById => GET /events/:id
 getMany => GET /events
+search => GET /search
+
 
 request body
 {
@@ -33,8 +35,11 @@ request body
 
 import { Request, Response } from "express";
 import { IEventService } from "../services/event.service.interface.js";
-import { EventType, CreateEventInput } from "../models/event.model.js";
+import type { EventType, CreateEventInput } from "../models/event.model.js";
 import { IIngestEventService } from "../services/ingest-event.service.interface.js";
+import { ISearchService } from "../services/search.service.interface.js";
+import type { SearchEventInput } from "../search/event.search.repository.interface.js";
+
 
 const validEventTypes: EventType[] = [
   "learning",
@@ -116,6 +121,18 @@ function validateCreateEventBody(body: CreateEventRequestBody): CreateEventInput
   return input;
 }
 
+function getSingleQueryValue(value: unknown): string | undefined {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  return undefined;
+}
+
+function isValidEventType(value: string): value is EventType {
+  return validEventTypes.includes(value as EventType);
+}
+
 type GetEventByIdParams = {
   id: string;
 };
@@ -123,9 +140,11 @@ type GetEventByIdParams = {
 export class EventController {
   private readonly ingestEventService: IIngestEventService;
   private readonly eventService: IEventService;
-  constructor(eventService: IEventService, ingestEventService: IIngestEventService) {
+  private readonly searchService: ISearchService;
+  constructor(eventService: IEventService, ingestEventService: IIngestEventService, searchService: ISearchService) {
     this.eventService = eventService;
     this.ingestEventService = ingestEventService;
+    this.searchService = searchService;
   }
 
   public async createEvent(req: Request, res: Response): Promise<void> {
@@ -149,9 +168,10 @@ export class EventController {
     try {
       const event = await this.eventService.getEventById(req.params.id);
       if(!event) {
-        res.status(400).json({
+        res.status(404).json({
           message: "Event not found",
         });
+        return;
       }
       res.status(200).json(event);
     } catch(error) {
@@ -173,4 +193,65 @@ export class EventController {
       });
     }
   }
+
+  public async searchEvents(req: Request, res: Response): Promise<void> {
+    try {
+      const input: SearchEventInput = {};
+      const keyword = getSingleQueryValue(req.query.keyword);
+      if(keyword) {
+        input.keyword = keyword;
+      }
+      const type = getSingleQueryValue(req.query.type);
+      if(type) {
+        if (!isValidEventType(type)) {
+          res.status(400).json({
+            message: "type must be one of learning, note, leetcode, activity",
+          });
+          return;
+        }
+        input.type = type;
+      }
+      const tags = getSingleQueryValue(req.query.tags);
+      if(tags) {
+        const parseTags = tags
+                          .split(',')
+                          .map((tag) => tag.trim())
+                          .filter((tag) => tag.length > 0)
+        if(parseTags.length > 0) {
+          input.tags = parseTags;
+        }
+      }
+      const from = getSingleQueryValue(req.query.from);
+      if(from) {
+        const fromDate = new Date(from);
+        if(Number.isNaN(fromDate.getTime())) {
+          res.status(400).json({
+            message: "from must be valid date string",
+          });
+          return;
+        }
+        input.from = fromDate;
+      }
+      const to = getSingleQueryValue(req.query.to);
+      if(to) {
+        const toDate = new Date(to);
+        if(Number.isNaN(toDate.getTime())) {
+          res.status(400).json({
+            message: "to must be valid date string",
+          });
+          return ;
+        }
+        input.to = toDate;
+      }
+      const result = await this.searchService.searchEvents(input);
+
+      res.status(200).json(result);
+    } catch(error) {
+      console.error(error);
+      res.status(500).json({
+        message: error instanceof Error ? error.message: "Fail to search events"
+      });
+    }
+  }
+
 }

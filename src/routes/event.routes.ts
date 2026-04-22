@@ -29,5 +29,10 @@ export function createEventRoutes(eventController: EventController): Router {
     eventController.getEventById.bind(eventController),
   );
 
+  router.get(
+    "/search",
+    eventController.searchEvents.bind(eventController),
+  );
+
   return router;
 }
