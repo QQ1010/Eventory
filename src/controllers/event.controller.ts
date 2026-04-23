@@ -42,7 +42,7 @@ import type { SearchEventInput } from "../search/event.search.repository.interfa
 import { IAnalyticsService, GetAnalyticsInput } from "../services/analytics.service.interface.js";
 
 
-const validEventTypes: EventType[] = [
+export const validEventTypes: EventType[] = [
   "learning",
   "note",
   "leetcode",

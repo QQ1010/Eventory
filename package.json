@@ -7,7 +7,8 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "worker:dev": "tsx watch src/workers/event.worker.ts"
+    "worker:dev": "tsx watch src/workers/event.worker.ts",
+    "cli": "tsx src/cli/cli.ts"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.19.1",
     "bullmq": "^5.74.1",
+    "commander": "^14.0.3",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "ioredis": "^5.10.1",
