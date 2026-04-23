@@ -39,6 +39,7 @@ import type { EventType, CreateEventInput } from "../models/event.model.js";
 import { IIngestEventService } from "../services/ingest-event.service.interface.js";
 import { ISearchService } from "../services/search.service.interface.js";
 import type { SearchEventInput } from "../search/event.search.repository.interface.js";
+import { IAnalyticsService, GetAnalyticsInput } from "../services/analytics.service.interface.js";
 
 
 const validEventTypes: EventType[] = [
@@ -141,10 +142,12 @@ export class EventController {
   private readonly ingestEventService: IIngestEventService;
   private readonly eventService: IEventService;
   private readonly searchService: ISearchService;
-  constructor(eventService: IEventService, ingestEventService: IIngestEventService, searchService: ISearchService) {
+  private readonly analyticsService: IAnalyticsService;
+  constructor(eventService: IEventService, ingestEventService: IIngestEventService, searchService: ISearchService, analyticsService: IAnalyticsService) {
     this.eventService = eventService;
     this.ingestEventService = ingestEventService;
     this.searchService = searchService;
+    this.analyticsService = analyticsService;
   }
 
   public async createEvent(req: Request, res: Response): Promise<void> {
@@ -254,4 +257,47 @@ export class EventController {
     }
   }
 
+  public async getAnalytics(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = getSingleQueryValue(req.query.userId);
+      if (!userId || userId.trim().length === 0) {
+        res.status(400).json({
+          message: "userId is required",
+        });
+        return;
+      }
+      const input: GetAnalyticsInput = {
+        userId: userId.trim(),
+      };
+      const from = getSingleQueryValue(req.query.from);
+      if(from) {
+        const fromDate = new Date(from);
+        if(Number.isNaN(fromDate.getTime())) {
+          res.status(400).json({
+            message: "from must be valid date string",
+          });
+          return;
+        }
+        input.from = fromDate;
+      }
+      const to = getSingleQueryValue(req.query.to);
+      if(to) {
+        const toDate = new Date(to);
+        if(Number.isNaN(toDate.getTime())) {
+          res.status(400).json({
+            message: "to must be valid date string",
+          });
+          return ;
+        }
+        input.to = toDate;
+      }
+      const result = await this.analyticsService.getAnalytics(input);
+      res.status(200).json(result);
+    } catch(error) {
+      console.error(error);
+      res.status(500).json({
+        message: error instanceof Error ? error.message : "Fail to get analytics"
+      })
+    }
+  }
 }

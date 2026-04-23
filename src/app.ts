@@ -7,6 +7,7 @@ app.ts
 - 建立 Controller
 - 註冊 Routes
 
+
 */
 
 import express from "express"
@@ -20,6 +21,7 @@ import { BullMQEventQueue } from "./queues/bullmq-event.queue.js";
 import { IngestEventService } from "./services/ingest-event.service.js";
 import { ElasticsearchEventSearchRepository } from "./search/elasticsearch-event.search.repository.js";
 import { SearchService } from "./services/search.service.js";
+import { AnalyticsService } from "./services/analytics.service.js";
 export async function buildApp() {
   const app = express();
 
@@ -39,7 +41,8 @@ export async function buildApp() {
   const ingestEventService = new IngestEventService(eventQueue);
   const searchRepository = new ElasticsearchEventSearchRepository();
   const searchService = new SearchService(searchRepository);
-  const eventController = new EventController(eventService, ingestEventService, searchService);
+  const analyticsService = new AnalyticsService(eventRepository);
+  const eventController = new EventController(eventService, ingestEventService, searchService, analyticsService);
 
   app.use(createEventRoutes(eventController));
 

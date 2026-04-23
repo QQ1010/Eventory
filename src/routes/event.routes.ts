@@ -3,9 +3,23 @@ event.routes.ts
   - 註冊 API endpoint
   - 把 request 交給 controller
 
-POST /events → controller.createEvent
-GET /events → controller.getEvents
-GET /events/:id → controller.getEventById
+POST /events
+  → IngestEventService
+  → Queue
+  → Worker
+
+GET /events
+GET /events/:id
+  → EventService
+  → MongoDB
+
+GET /search
+  → SearchService
+  → Elasticsearch
+
+GET /analytics
+  → AnalyticsService
+  → MongoDB aggregation
 
 */
 
@@ -32,6 +46,11 @@ export function createEventRoutes(eventController: EventController): Router {
   router.get(
     "/search",
     eventController.searchEvents.bind(eventController),
+  );
+
+  router.get(
+    "/analytics",
+    eventController.getAnalytics.bind(eventController),
   );
 
   return router;
