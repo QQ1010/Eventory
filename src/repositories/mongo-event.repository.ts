@@ -8,7 +8,7 @@ event.repository.ts
 */
 import { Collection, Db, ObjectId } from "mongodb";
 import { Event } from "../models/event.model.js";
-import { IEventRepository } from "./event.repository.interface.js";
+import { IEventRepository, EventsPerDayItem, TopTagItem } from "./event.repository.interface.js";
 
 export class MongodbEventRepository implements IEventRepository {
   private collection: Collection;
@@ -73,4 +73,112 @@ export class MongodbEventRepository implements IEventRepository {
       });
     });
   }
+
+  async countEventsPerDay(userId: string, from?: Date, to?: Date): Promise<EventsPerDayItem[]> {
+    const matchStage: {
+      userId: string,
+      occurredAt?: {
+        $gte?: Date,
+        $lte?: Date,
+      };
+    } = {userId};
+    if(from || to) {
+      matchStage.occurredAt = {};
+      if(from) {
+        matchStage.occurredAt.$gte = from;
+      }
+      if(to) {
+        matchStage.occurredAt.$lte = to;
+      }
+    }
+    const documents = await this.collection.aggregate<EventsPerDayItem>([
+      {
+        $match: matchStage,
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$occurredAt",
+            },
+          },
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          date: "$_id",
+          count: 1,
+        },
+      },
+    ])
+    .toArray();
+    return documents;
+  }
+
+  async getTopTags(userId: string, from?: Date, to?: Date, limit?: number): Promise<TopTagItem[]> {
+    const matchStage: {
+      userId: string,
+      tags?: { $exists: boolean; $ne: [] };
+      occurredAt?: {
+        $gte?: Date,
+        $lte?: Date,
+      };
+    } = {
+      userId,
+      tags: { $exists: true, $ne: [] },
+    };
+    if(from || to) {
+      matchStage.occurredAt = {};
+      if(from) {
+        matchStage.occurredAt.$gte = from;
+      }
+      if(to) {
+        matchStage.occurredAt.$lte = to;
+      }
+    }
+    const documents = await this.collection.aggregate<TopTagItem>([
+      {
+        $match: matchStage,
+      },
+      {
+        $unwind: "$tags",
+      },
+      {
+        $group: {
+          _id: "$tags",
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $sort: {
+          count: -1,
+        }
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $project: {
+          _id: 0,
+          tags: "$_id",
+          count: 1
+        }
+      }
+    ])
+    .toArray();
+    return documents;
+  }
+
 }
