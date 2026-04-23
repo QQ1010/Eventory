@@ -91,7 +91,7 @@ Client
   → Repository
   → MongoDB
 ```
-### ### Phase 2: Event-Driven Architecture
+### Phase 2: Event-Driven Architecture
 - Add request validation and error handling
 - Implemented Express MVC structure
 - Implemented MongoDB event persistence
@@ -99,9 +99,14 @@ Client
 - Refactored POST /events into Redis Queue based asynchronous ingestion
 - Implemented BullMQ worker to consume events and store them in MongoDB
 - Verify retry and backoff behavior
+- Implement worker
+- Store events in MongoDB
+- Index events into Elasticsearch
+- Add retry handling
 - Implemented GET / search by using Elasticsearch
+- Implemented GET / analytics API
 
-The next phase will refactor event ingestion into an asynchronous flow.
+The phase will refactor event ingestion into an asynchronous flow.
 
 ```text
 Client / CLI
@@ -111,16 +116,7 @@ Client / CLI
   → MongoDB
   → Elasticsearch
 ```
-
-### Day 
-- Implement worker
-- Store events in MongoDB
-- Index events into Elasticsearch
-- Add retry handling
-### Day 
-- Implement search API
-- Implement analytics API
-- Add Redis cache-aside pattern
+###  Phase 3: Production Readiness & Tooling
 ### Day 
 - Implement CLI tool
 - Add Docker Compose
@@ -128,6 +124,14 @@ Client / CLI
 - Add GitHub Actions
 - Polish README and documentation
 
+```text
+Client / CLI
+  → API Server
+  → Redis Queue
+  → Worker
+  → MongoDB
+  → Elasticsearch
+```
 ## Design Decisions
 ### Why MongoDB?
 
