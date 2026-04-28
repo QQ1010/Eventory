@@ -12,7 +12,7 @@ export class SearchService implements ISearchService {
         const normalizedInput: SearchEventInput = {};
 
         if(input.keyword && input.keyword.trim().length > 0) {
-            normalizedInput.keyword = input.keyword.trim();
+            normalizedInput.keyword = input.keyword.trim().replace(/\s+/g, " ");
         }
 
         if(input.tags && input.tags.length > 0) {

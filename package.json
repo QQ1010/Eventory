@@ -8,7 +8,9 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "worker:dev": "tsx watch src/workers/event.worker.ts",
-    "cli": "tsx src/cli/cli.ts"
+    "cli": "tsx src/cli/cli.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -26,7 +28,8 @@
     "@types/express": "^5.0.6",
     "@types/node": "^25.6.0",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.5"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.19.1",
