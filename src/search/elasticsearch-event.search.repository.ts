@@ -24,7 +24,7 @@ export class ElasticsearchEventSearchRepository implements IEventSearchRepositor
                     tags: { type: "keyword"},
                     source: { type: "keyword"},
                     occurredAt: { type: "date"},
-                    createAt: { type: "date"},
+                    createdAt: { type: "date"},
                     updatedAt: { type: "date"},
                     metadata: { type: "object"},
                 }
@@ -130,9 +130,9 @@ export class ElasticsearchEventSearchRepository implements IEventSearchRepositor
             content: event.content,
             tags: event.tags,
             source: event.source,
-            occurredAt: event.occurredAt.toISOString(),
-            createdAt: event.createdAt.toISOString(),
-            updatedAt: event.updatedAt.toISOString(),
+            occurredAt: this.toIsoString(event.occurredAt),
+            createdAt: this.toIsoString(event.createdAt),
+            updatedAt: this.toIsoString(event.updatedAt),
             metadata: event.metadata,
         };
     }
@@ -150,6 +150,14 @@ export class ElasticsearchEventSearchRepository implements IEventSearchRepositor
             updatedAt: new Date(document.updatedAt),
             metadata: document.metadata,
         });
+    }
+
+    private toIsoString(value: Date | string): string {
+        if (value instanceof Date) {
+            return value.toISOString();
+        }
+
+        return new Date(value).toISOString();
     }
 
 }

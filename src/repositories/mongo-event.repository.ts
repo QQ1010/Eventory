@@ -77,21 +77,26 @@ export class MongodbEventRepository implements IEventRepository {
   async countEventsPerDay(userId: string, from?: Date, to?: Date): Promise<EventsPerDayItem[]> {
     const matchStage: {
       userId: string,
-      occurredAt?: {
+      normalizedOccurredAt?: {
         $gte?: Date,
         $lte?: Date,
       };
     } = {userId};
     if(from || to) {
-      matchStage.occurredAt = {};
+      matchStage.normalizedOccurredAt = {};
       if(from) {
-        matchStage.occurredAt.$gte = from;
+        matchStage.normalizedOccurredAt.$gte = from;
       }
       if(to) {
-        matchStage.occurredAt.$lte = to;
+        matchStage.normalizedOccurredAt.$lte = to;
       }
     }
     const documents = await this.collection.aggregate<EventsPerDayItem>([
+      {
+        $addFields: {
+          normalizedOccurredAt: { $toDate: "$occurredAt" },
+        },
+      },
       {
         $match: matchStage,
       },
@@ -100,7 +105,7 @@ export class MongodbEventRepository implements IEventRepository {
           _id: {
             $dateToString: {
               format: "%Y-%m-%d",
-              date: "$occurredAt",
+              date: "$normalizedOccurredAt",
             },
           },
           count: {
@@ -129,7 +134,7 @@ export class MongodbEventRepository implements IEventRepository {
     const matchStage: {
       userId: string,
       tags?: { $exists: boolean; $ne: [] };
-      occurredAt?: {
+      normalizedOccurredAt?: {
         $gte?: Date,
         $lte?: Date,
       };
@@ -138,15 +143,20 @@ export class MongodbEventRepository implements IEventRepository {
       tags: { $exists: true, $ne: [] },
     };
     if(from || to) {
-      matchStage.occurredAt = {};
+      matchStage.normalizedOccurredAt = {};
       if(from) {
-        matchStage.occurredAt.$gte = from;
+        matchStage.normalizedOccurredAt.$gte = from;
       }
       if(to) {
-        matchStage.occurredAt.$lte = to;
+        matchStage.normalizedOccurredAt.$lte = to;
       }
     }
     const documents = await this.collection.aggregate<TopTagItem>([
+      {
+        $addFields: {
+          normalizedOccurredAt: { $toDate: "$occurredAt" },
+        },
+      },
       {
         $match: matchStage,
       },
@@ -172,7 +182,7 @@ export class MongodbEventRepository implements IEventRepository {
       {
         $project: {
           _id: 0,
-          tags: "$_id",
+          tag: "$_id",
           count: 1
         }
       }
