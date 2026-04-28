@@ -75,7 +75,7 @@ This project is designed to practice the following backend concepts:
 The first version focuses on backend architecture and system design rather than frontend UI. The main user interfaces will be REST APIs and a CLI tool.
 
 ## Development Plan
-### Phase 1: Synchronous MVC (Day 1 ~ Day 3)
+### Phase 1: Synchronous MVC
 - Define project requirements
 - Design API contracts
 - Design MongoDB schema
@@ -117,7 +117,6 @@ Client / CLI
   → Elasticsearch
 ```
 ###  Phase 3: Production Readiness & Tooling
-### Day 
 - Implement CLI tool
 - Add Docker Compose
 - Add tests
@@ -132,11 +131,3 @@ Client / CLI
   → MongoDB
   → Elasticsearch
 ```
-## Design Decisions
-### Why MongoDB?
-
-
-### Why Elasticsearch?
-
-
-### Why Redis?

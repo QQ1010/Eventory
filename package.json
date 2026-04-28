@@ -9,6 +9,8 @@
     "start": "node dist/server.js",
     "worker:dev": "tsx watch src/workers/event.worker.ts",
     "cli": "tsx src/cli/cli.ts",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build",
     "test": "vitest run",
     "test:watch": "vitest"
   },
