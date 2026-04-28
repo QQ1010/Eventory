@@ -1,0 +1,1 @@
+{"version":3,"file":"ingest-event.service.js","sourceRoot":"","sources":["ingest-event.service.ts"],"names":[],"mappings":"AAAA;;;;EAIE;AAMF,MAAM,OAAO,kBAAkB;IACV,UAAU,CAAc;IAEzC,YAAY,UAAuB;QAC/B,IAAI,CAAC,UAAU,GAAG,UAAU,CAAC;IACjC,CAAC;IAED,KAAK,CAAC,WAAW,CAAC,KAAuB;QACrC,MAAM,GAAG,GAAG,MAAM,IAAI,CAAC,UAAU,CAAC,YAAY,CAAC,KAAK,CAAC,CAAC;QACtD,OAAO,GAAG,CAAC;IACf,CAAC;CACJ"}
