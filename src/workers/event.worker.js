@@ -12,6 +12,17 @@ import { EVENT_INGESTION_QUEUE_NAME } from "../queues/event-queue.constants.js";
 import { MongodbEventRepository } from "../repositories/mongo-event.repository.js";
 import { EventService } from "../services/event.service.js";
 import { ElasticsearchEventSearchRepository } from "../search/elasticsearch-event.search.repository.js";
+function normalizeJobData(data) {
+    if (!data.occurredAt) {
+        return data;
+    }
+    return {
+        ...data,
+        occurredAt: data.occurredAt instanceof Date
+            ? data.occurredAt
+            : new Date(data.occurredAt),
+    };
+}
 async function startWorker() {
     const db = await connectDatabase();
     const eventRepository = new MongodbEventRepository(db);
@@ -20,7 +31,7 @@ async function startWorker() {
     await eventSearchRepository.ensureIndex();
     const worker = new Worker(EVENT_INGESTION_QUEUE_NAME, async (job) => {
         console.log(`Processing job ${job.id}, attempt ${job.attemptsMade + 1}`);
-        const event = await eventService.createEvent(job.data);
+        const event = await eventService.createEvent(normalizeJobData(job.data));
         await eventSearchRepository.indexEvent(event);
         console.log(`Event indexed in Elasticsearch: ${event.id}`);
         console.log(`Event created: ${event.id}`);

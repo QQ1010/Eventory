@@ -7,3 +7,55 @@
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m下午10:31:19[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /events[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:19[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /search[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:19[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /analytics?userId=user_1[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:19[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /events[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:19[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /search[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:19[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /analytics?userId=user_1[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:24[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /events[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:24[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /search[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:24[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /analytics?userId=user_1[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:24[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /events[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:24[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /search[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:24[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /analytics?userId=user_1[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+[2m下午10:31:48[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /events[39m
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)

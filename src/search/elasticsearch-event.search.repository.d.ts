@@ -7,5 +7,6 @@ export declare class ElasticsearchEventSearchRepository implements IEventSearchR
     private buildSearchQuery;
     private toElasticsearchDocument;
     private toEvent;
+    private toIsoString;
 }
 //# sourceMappingURL=elasticsearch-event.search.repository.d.ts.map

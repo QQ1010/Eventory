@@ -70,15 +70,20 @@ export class MongodbEventRepository {
     async countEventsPerDay(userId, from, to) {
         const matchStage = { userId };
         if (from || to) {
-            matchStage.occurredAt = {};
+            matchStage.normalizedOccurredAt = {};
             if (from) {
-                matchStage.occurredAt.$gte = from;
+                matchStage.normalizedOccurredAt.$gte = from;
             }
             if (to) {
-                matchStage.occurredAt.$lte = to;
+                matchStage.normalizedOccurredAt.$lte = to;
             }
         }
         const documents = await this.collection.aggregate([
+            {
+                $addFields: {
+                    normalizedOccurredAt: { $toDate: "$occurredAt" },
+                },
+            },
             {
                 $match: matchStage,
             },
@@ -87,7 +92,7 @@ export class MongodbEventRepository {
                     _id: {
                         $dateToString: {
                             format: "%Y-%m-%d",
-                            date: "$occurredAt",
+                            date: "$normalizedOccurredAt",
                         },
                     },
                     count: {
@@ -117,15 +122,20 @@ export class MongodbEventRepository {
             tags: { $exists: true, $ne: [] },
         };
         if (from || to) {
-            matchStage.occurredAt = {};
+            matchStage.normalizedOccurredAt = {};
             if (from) {
-                matchStage.occurredAt.$gte = from;
+                matchStage.normalizedOccurredAt.$gte = from;
             }
             if (to) {
-                matchStage.occurredAt.$lte = to;
+                matchStage.normalizedOccurredAt.$lte = to;
             }
         }
         const documents = await this.collection.aggregate([
+            {
+                $addFields: {
+                    normalizedOccurredAt: { $toDate: "$occurredAt" },
+                },
+            },
             {
                 $match: matchStage,
             },
@@ -151,7 +161,7 @@ export class MongodbEventRepository {
             {
                 $project: {
                     _id: 0,
-                    tags: "$_id",
+                    tag: "$_id",
                     count: 1
                 }
             }
