@@ -1,1 +1,0 @@
-{"version":3,"file":"bullmq-event.queue.d.ts","sourceRoot":"","sources":["bullmq-event.queue.ts"],"names":[],"mappings":"AAWA,OAAO,EAAE,WAAW,EAAE,iBAAiB,EAAE,MAAM,oCAAoC,CAAC;AACpF,OAAO,EAAE,gBAAgB,EAAE,MAAM,0BAA0B,CAAC;AAI5D,qBAAa,gBAAiB,YAAW,WAAW;IAChD,OAAO,CAAC,QAAQ,CAAC,KAAK,CAA0B;;IAQnC,YAAY,CAAC,KAAK,EAAE,gBAAgB,GAAG,OAAO,CAAC,iBAAiB,CAAC;CAkBjF"}

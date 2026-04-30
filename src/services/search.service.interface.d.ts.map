@@ -1,1 +1,0 @@
-{"version":3,"file":"search.service.interface.d.ts","sourceRoot":"","sources":["search.service.interface.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,gBAAgB,EAAE,iBAAiB,EAAG,MAAM,gDAAgD,CAAC;AAE3G,MAAM,WAAW,cAAc;IAC3B,YAAY,CAAC,KAAK,EAAE,gBAAgB,GAAI,OAAO,CAAC,iBAAiB,CAAC,CAAC;CACtE"}

@@ -59,3 +59,5 @@ AggregateError [ECONNREFUSED]:
 AggregateError [ECONNREFUSED]: 
     at internalConnectMultiple (node:net:1142:49)
     at afterConnectMultiple (node:net:1723:7)
+[2m下午10:46:40[22m [36m[1m[vite][22m[39m [32mvite.config.js changed, restarting server...[39m
+[2m下午10:46:41[22m [36m[1m[vite][22m[39m server restarted.

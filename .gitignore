@@ -2,3 +2,5 @@
 .env
 /frontend/node_modules
 frontend-dev.log
+/dist
+/frontend/dist
