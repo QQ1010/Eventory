@@ -23,6 +23,16 @@ Instead of building a simple CRUD application, this project treats every user ac
 ![System Architecture](./assets/architecture.png)
 
 
+## Sequence Diagram
+### Event Ingestion Sequence Diagram
+![Event Ingestion Sequence Diagram](./assets/Eventory_EventSeqenceDiagram.png)
+
+### Search Sequence Diagram
+![Search Sequence Diagram](./assets/Eventory_SearchSequenceDiagram.png)
+
+## Class Diagram
+![Class Diagram](./assets/Eventory_ClassDiagram.png)
+
 ## Event Types
 
 The system treats each record as an event. Each event belongs to one of the following types:
