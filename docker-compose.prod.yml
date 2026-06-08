@@ -33,6 +33,9 @@ services:
       - elasticsearch
 
   worker:
+    build:
+      context: .
+      target: runtime
     image: eventory-app:local
     container_name: eventory-worker
     restart: unless-stopped
