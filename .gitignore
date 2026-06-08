@@ -1,6 +1,8 @@
 /node_modules
-.env
 /frontend/node_modules
 frontend-dev.log
 /dist
 /frontend/dist
+.env
+.env.*
+!.env.example

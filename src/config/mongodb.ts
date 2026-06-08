@@ -1,6 +1,6 @@
 import { MongoClient, Db} from "mongodb";
 
-const mongoUrl = process.env.MONGO_RUL ?? "mongodb://localhost:27017";
+const mongoUrl = process.env.MONGO_URL ?? process.env.MONGO_RUL ?? "mongodb://localhost:27017";
 const databaseName = process.env.MONGO_DB_NAME ?? "eventory";
 
 let client: MongoClient;

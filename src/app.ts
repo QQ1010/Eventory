@@ -10,7 +10,13 @@ app.ts
 
 */
 
-import express from "express"
+import express from "express";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDistPath = path.resolve(__dirname, "../frontend/dist");
 
 import { connectDatabase } from "./config/mongodb.js";
 import { MongodbEventRepository } from "./repositories/mongo-event.repository.js";
@@ -45,6 +51,14 @@ export async function buildApp() {
   const eventController = new EventController(eventService, ingestEventService, searchService, analyticsService);
 
   app.use(createEventRoutes(eventController));
+
+  if (process.env.NODE_ENV === "production") {
+    app.use(express.static(frontendDistPath));
+
+    app.get("/{*splat}", (req, res) => {
+      res.sendFile(path.join(frontendDistPath, "index.html"));
+    });
+  }
 
   return app;
 }
