@@ -17,10 +17,99 @@ Instead of building a simple CRUD application, this project treats every user ac
 - Analytics for daily activity and top tags
 - CLI tool for adding events from the terminal
 - Docker-based local development environment
-- GitHub Actions for testing and Docker image build
+- Docker Compose production deployment topology
+- Caddy reverse proxy for the public web entrypoint
+- GCP Compute Engine portfolio/demo deployment
+- GitHub Actions CI/CD for automated testing, build, and VM deployment
 
 ## Architecture
 ![System Architecture](./assets/architecture.png)
+
+## Production Deployment
+Eventory is deployed as a portfolio/demo system on Google Cloud Platform using a single Compute Engine VM, Docker Compose, and Caddy.
+
+```text
+Internet
+  -> GCP Firewall
+  -> Ubuntu UFW
+  -> Caddy
+  -> Eventory API / Frontend
+  -> Redis Queue
+  -> Worker
+  -> MongoDB + Elasticsearch
+```
+
+Only Caddy exposes public ports `80` and `443`. MongoDB, Redis, Elasticsearch, the API container, and the worker container communicate through the internal Docker network.
+
+## Deployment Stack
+- GCP Compute Engine for VM hosting
+- Docker Compose for multi-service orchestration
+- Caddy for reverse proxy and future HTTPS termination
+- MongoDB as source-of-truth storage
+- Redis for BullMQ queue processing
+- Elasticsearch for full-text indexing and search
+- GitHub Actions for CI/CD
+
+## CI/CD Flow
+On every push to `main`, GitHub Actions:
+
+1. Installs backend dependencies.
+2. Runs backend tests.
+3. Builds the TypeScript backend.
+4. Installs frontend dependencies.
+5. Builds the Vite frontend.
+6. Connects to the GCP VM over SSH.
+7. Pulls the latest code.
+8. Rebuilds and restarts containers with Docker Compose.
+9. Runs a health check against `/health`.
+
+This is a first-version CD pipeline designed for a portfolio deployment. A production-grade version would add image registry publishing, deployment approvals, rollback strategy, and stronger observability.
+
+## Production Commands
+Start the production stack:
+
+```bash
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+Check service status:
+
+```bash
+docker compose -f docker-compose.prod.yml ps
+```
+
+View logs:
+
+```bash
+docker compose -f docker-compose.prod.yml logs --tail=80 app
+docker compose -f docker-compose.prod.yml logs --tail=80 worker
+docker compose -f docker-compose.prod.yml logs --tail=80 caddy
+```
+
+Stop the production stack:
+
+```bash
+docker compose -f docker-compose.prod.yml down
+```
+
+## Environment Variables
+Production uses `.env`, based on `.env.example`:
+
+```env
+NODE_ENV=production
+PORT=3000
+MONGO_URL=mongodb://mongodb:27017
+MONGO_DB_NAME=eventory
+REDIS_URL=redis://redis:6379
+ELASTICSEARCH_URL=http://elasticsearch:9200
+```
+
+## Operational Notes
+- The VM uses a static external IP so GitHub Actions and DNS can target a stable host.
+- GCP firewall and Ubuntu UFW only allow SSH, HTTP, and HTTPS.
+- Data services are not exposed to the public internet.
+- The worker runs as a separate container from the web/API service.
+- The current deployment is intended for portfolio demonstration, not production SaaS usage.
 
 
 ## Sequence Diagram
