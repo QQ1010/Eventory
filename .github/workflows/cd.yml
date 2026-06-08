@@ -51,5 +51,23 @@ jobs:
              git pull origin main
              test -f .env
              docker compose -f docker-compose.prod.yml up -d --build
-             curl -f http://localhost/health
-             docker compose -f docker-compose.prod.yml ps'
+             for i in {1..20}; do
+               if curl -fsS http://localhost/health; then
+                 echo "Health check passed"
+                 break
+               fi
+ 
+               echo "Health check failed, retrying in 3 seconds..."
+               sleep 3
+ 
+               if [ "$i" -eq 20 ]; then
+                 echo "Health check failed after retries"
+                 docker compose -f docker-compose.prod.yml ps
+                 docker compose -f docker-compose.prod.yml logs --tail=80 app
+                 docker compose -f docker-compose.prod.yml logs --tail=80 caddy
+                 docker compose -f docker-compose.prod.yml logs --tail=80 worker
+                 exit 1
+               fi
+             done
+ 
+             docker compose -f docker-compose.prod.yml ps
